@@ -27,4 +27,4 @@ source .env && docker run --rm -v ./etc/infrastructure/ssl:/certificates -e "SER
 ```
 
 # Telegram library
-Used repository [TelegramBotPHP](https://github.com/Eleirbag89/TelegramBotPHP) с дописанным функционалом.
+Used changed repository [TelegramBotPHP](https://github.com/Eleirbag89/TelegramBotPHP)
