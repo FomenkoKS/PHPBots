@@ -1,1 +1,2 @@
 etc/infrastructure/ssl/*
+.docker/mysql/data/

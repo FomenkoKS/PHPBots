@@ -9,18 +9,19 @@ RUN apk --update upgrade \
         bcmath \
         opcache \
         intl \
+        mysqli \
         pdo_mysql \
         sockets \
     && docker-php-ext-enable \
 #        amqp \
 #        apcu \
+        mysqli \
         opcache \
         redis
 
 WORKDIR /var/www
 RUN chmod 777 /var/www -R
 RUN chown www-data:www-data /var/www -R
-
 RUN apk --update add wget \ 
 		     curl \
 		     git \
@@ -31,6 +32,7 @@ RUN apk --update add wget \
 		     php7-json \
 		     php7-mbstring \
 		     php7-phar \
+             php7-mysqli \
 		     php7-dom --repository http://nl.alpinelinux.org/alpine/edge/testing/ && rm /var/cache/apk/*
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer

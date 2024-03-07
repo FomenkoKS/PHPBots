@@ -1,6 +1,6 @@
 version: "3.5"
 
-services:
+services:      
   apache:
     image: 'httpd:2.4.41-alpine'
     container_name: apache
@@ -13,7 +13,8 @@ services:
       - ./etc/infrastructure/apache/httpd.conf:/usr/local/apache2/conf/httpd.conf:rw
       - ./etc/infrastructure/apache/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf:rw
       - ./etc/infrastructure/ssl:/usr/local/apache2/ssl:delegated
-      - .:/var/www/html:delegated
+      - ./index.php:/var/www/html/index.php
+      - .:/var/www/html/bots/:delegated
     ports:
     - 80:80
     - 443:443
@@ -32,7 +33,8 @@ services:
       - "9091:9001"
       - "9090:9000"
     volumes:
-      - .:/var/www/html:delegated
+      - ./index.php:/var/www/html/index.php
+      - .:/var/www/html/bots/:delegated
     networks:
       - backend
 
@@ -41,9 +43,31 @@ services:
     image: 'redis:5.0.7-alpine'
     ports:
       - 6379:6379
+    volumes:
+      - redis_data:/data
     networks:
       - backend
-      
+
+  db:
+    image: mariadb:10.6
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - .docker/mysql/data:/var/lib/mysql
+    networks:
+      - backend
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+    networks:
+      - backend
+
 networks:
     backend:
       name: backend
